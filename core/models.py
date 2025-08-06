@@ -155,13 +155,13 @@ class AreaOfActivity(BasePublishModel):
         return self.title
     
 class WebsiteInformations(BasePublishModel):
-    website_title = models.CharField(max_length=255, blank=True, null=True, default="Defensoria Pública do Estado de Santa Catarina")
+    title = models.CharField(max_length=255, blank=True, null=True, default="Defensoria Pública do Estado de Santa Catarina")
     slogan = models.CharField(max_length=400, blank=True, null=True)
     key_words = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField()
 
     def __str__(self):
-        return self.website_title
+        return self.title
     
 class SocialMedia(BasePublishModel):
     SOCIAL_MEDIA_ICONS = [
@@ -185,3 +185,17 @@ class SocialMedia(BasePublishModel):
 
     def __str__(self):
         return self.name
+    
+class EmailWebsite(BasePublishModel):
+    LOCATION_CHOICES = [
+        ("email_website", "Email do Website"),
+        ("comentarios", "Comentários"),
+        ("faq", "FAQ"),
+        ("relato_de_erros", "Relato de Erros"),
+
+    ]
+    location = models.CharField(max_length=255, choices=LOCATION_CHOICES, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+
+    def __str__(self):
+        return self.location

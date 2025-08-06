@@ -11,6 +11,7 @@ from core.models import (
     AreaOfActivity,
     WebsiteInformations,
     SocialMedia,
+    EmailWebsite,
     )
 
 class FAQSerializer(serializers.ModelSerializer):
@@ -74,5 +75,11 @@ class WebsiteInformationsSerializer(serializers.ModelSerializer):
 class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
+        fields = '__all__'
+        read_only_fields = ['author', 'created_at', 'updated_at', 'published_at']
+
+class EmailWebsiteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailWebsite
         fields = '__all__'
         read_only_fields = ['author', 'created_at', 'updated_at', 'published_at']

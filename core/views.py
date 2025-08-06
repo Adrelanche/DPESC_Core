@@ -15,6 +15,7 @@ from .models import (
     AreaOfActivity,
     WebsiteInformations,
     SocialMedia,
+    EmailWebsite,
     )
 from .serializers import (
     FAQSerializer,
@@ -27,6 +28,7 @@ from .serializers import (
     AreaOfActivitySerializer,
     WebsiteInformationsSerializer,
     SocialMediaSerializer,
+    EmailWebsiteSerializer,
     )
 
 class FaqView(generics.GenericAPIView):
@@ -493,3 +495,40 @@ class SocialMediaView(generics.GenericAPIView):
         
         social_media.delete()
         return Response({f'Social media {pk}, deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+class EmailWebsiteView(generics.GenericAPIView):
+    queryset = EmailWebsite.objects.all()
+    serializer_class = EmailWebsiteSerializer
+
+    def get(self, request, *args, **kwargs):
+        email_website = self.get_queryset()
+        serializer = self.get_serializer(email_website, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(author=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def patch(self, request, pk, *args, **kwargs):
+        try:
+            email_website = EmailWebsite.objects.get(pk=pk)
+        except EmailWebsite.DoesNotExist:
+            return Response({'error': 'Email not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = self.get_serializer(email_website, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(author=request.user)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        try:
+            email_website = EmailWebsite.objects.get(pk=pk)
+        except EmailWebsite.DoesNotExist:
+            return Response({'error': 'Email not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        email_website.delete()
+        return Response({f'Email {pk}, deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
