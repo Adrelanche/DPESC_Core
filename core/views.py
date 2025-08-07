@@ -422,6 +422,11 @@ class WebsiteInformationView(generics.GenericAPIView):
     serializer_class = WebsiteInformationsSerializer
     queryset = WebsiteInformations.objects.all()
 
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAdminUser()]
+
     def get(self, request, *args, **kwargs):
         website_information = WebsiteInformations.objects.first()
         if not website_information:

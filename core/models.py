@@ -26,26 +26,26 @@ class BasePublishModel(models.Model):
         super().save(*args, **kwargs)
 
 class FAQ(BasePublishModel):
-    question = models.TextField()
-    answer = models.TextField()
+    question = models.TextField(blank=True, null=True)
+    answer = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.question
     
 class Core(BasePublishModel):
-    core_name = models.TextField()
+    core_name = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.core_name
     
 class TypeOfService(BasePublishModel):
-    service_name = models.TextField()
+    service_name = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.service_name
 
 class AreaOfDuty(BasePublishModel):
-    dutie_name = models.TextField()
+    dutie_name = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.dutie_name   
@@ -81,7 +81,7 @@ class Unit(BasePublishModel):
         ("tocantins", "Tocantins"),
     ]
 
-    unit_name = models.CharField(max_length=255)
+    unit_name = models.CharField(max_length=255, blank=True, null=True)
     core = models.ForeignKey(Core, on_delete=models.CASCADE, related_name="units")
     url = models.URLField(blank=True, null=True)
     observation = models.TextField(blank=True, null=True)
@@ -90,12 +90,12 @@ class Unit(BasePublishModel):
     name_dp = models.CharField(max_length=255, blank=True, null=True)
     email_dp = models.EmailField(blank=True, null=True)
     
-    cep = models.CharField(max_length=10)
-    street = models.CharField(max_length=255)
-    district = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255, choices=STATE_CHOICES, default="santa_catarina")
-    phone = models.CharField(max_length=20)
+    cep = models.CharField(max_length=10, blank=True, null=True)
+    street = models.CharField(max_length=255, blank=True, null=True)
+    district = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    state = models.CharField(max_length=255, choices=STATE_CHOICES, default="santa_catarina", blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
     is_whatsapp = models.BooleanField(default=False)
 
     department = models.CharField(max_length=255, blank=True, null=True)
@@ -113,10 +113,10 @@ class Unit(BasePublishModel):
         return self.unit_name 
     
 class Popup(BasePublishModel):
-    title = models.CharField(max_length=255, blank=True, null=False)
+    title = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    start_date =  models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date =  models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
     url = models.URLField(blank=True, null=True)
     image = models.ImageField(upload_to='popups/', blank=True, null=True)
     click = models.PositiveIntegerField(default=0)
@@ -135,7 +135,7 @@ class Popup(BasePublishModel):
         return self.title
     
 class Tag(BasePublishModel):
-    name_tag = models.CharField(max_length=255)
+    name_tag = models.CharField(max_length=255, blank=True, null=True)
     times_used = models.PositiveIntegerField(default=0)
 
     def increment_times_used(self):
@@ -147,7 +147,7 @@ class Tag(BasePublishModel):
     
 class AreaOfActivity(BasePublishModel):
     title = models.CharField(max_length=255, blank=True, null=False)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     url = models.URLField(blank=True, null=True)
     image = models.ImageField(upload_to='area_of_activity/', blank=True, null=True)
 
@@ -158,7 +158,7 @@ class WebsiteInformations(BasePublishModel):
     title = models.CharField(max_length=255, blank=True, null=True, default="Defensoria Pública do Estado de Santa Catarina")
     slogan = models.CharField(max_length=400, blank=True, null=True)
     key_words = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.title
